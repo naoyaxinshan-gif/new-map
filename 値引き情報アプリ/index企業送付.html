@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【提携提案デモ】食品ロス情報共有フォームと地図</title>
+    <style>
+        /* 1. 全体のレイアウト設定 - 地図を固定配置 */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 30px;
+            background-color: #f4ffec; /* 背景色を淡いグリーンに変更 */
+            color: #333;
+            position: relative; /* 地図をabsolute配置するための基準 */
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 650px; /* フォームの最大幅を調整 */
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative; /* 必要に応じて要素の基準点を設定 */
+        }
+        
+        /* 2. 地図コンテナのスタイル - 右上にコンパクトに固定 */
+        .map-container {
+            position: absolute; /* 親要素に対して絶対位置で固定 */
+            top: 30px; /* 上端から30px */
+            right: 30px; /* 右端から30px */
+            width: 350px; /* 地図の幅をコンパクトに */
+            height: 300px; /* 地図の高さを設定 */
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 10; /* 他の要素の上に表示 */
+        }
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* 3. フォーム項目のスタイル（以前のものを維持・微調整） */
+        h2 {
+            color: #d32f2f;
+            text-align: center;
+            margin-bottom: 5px;
+            font-size: 1.8em;
+        }
+        p {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .store-selection-group {
+            margin-bottom: 25px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .store-selection-group h3 {
+            color: #555;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            border-bottom: 1px dashed #eee;
+            padding-bottom: 5px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+            font-size: 0.95em;
+        }
+        input[type="text"], input[type="number"], select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+        
+        /* 4. ボタンとデータフィードバックのスタイル */
+        .ai-input-button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #ffffff;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 25px;
+        }
+        .note {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.85em;
+            color: #888;
+        }
+        .data-insight {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #e3f2fd;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .data-insight h3 {
+            color: #1565c0;
+            margin-top: 0;
+            border-bottom: 2px solid #90caf9;
+            padding-bottom: 10px;
+        }
+        .data-insight strong {
+            color: #d32f2f;
+            font-size: 1.5em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="map-container">
+    <iframe src="discount_map_enhanced(2).html"></iframe>
+</div>
+
+<div class="container">
+    <h2>【食品ロス削減】超・簡単情報連携デモ</h2>
+    <p>店舗の負担を最小限に抑え、リアルタイム情報共有を実現するためのデモです。</p>
+
+    <div class="store-selection-group">
+        <h3>🔴 ハローズ (Harrows)</h3>
+        <div class="form-group">
+            <label for="harrows_store">店舗選択</label>
+            <select id="harrows_store" name="harrows_store">
+                <option value="" disabled selected>店舗を選択してください</option>
+                <option value="mukou">御幸店</option>
+                <option value="midori">緑町店</option>
+                <option value="shinagai">新涯店</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="store-selection-group">
+        <h3>🟠 フレスタ・エブリー (Fresta / Every)</h3>
+        <div class="form-group">
+            <label for="fresta_store">店舗選択</label>
+            <select id="fresta_store" name="fresta_store">
+                <option value="" disabled selected>店舗を選択してください</option>
+                <option value="kusado">草戸店 (フレスタ)</option>
+                <option value="kanabe">神辺店 (エブリー)</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="category">カテゴリ</label>
+        <select id="category" name="category">
+            <option value="bento">お弁当</option>
+            <option value="sozai">お惣菜</option>
+            <option value="meat">精肉</option>
+            <option value="bread">パン</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="discount_rate">割引率 (AI予測値)</label>
+        <input type="text" id="discount_rate" name="discount_rate" value="50% OFF" readonly>
+    </div>
+
+    <button type="submit" class="ai-input-button">📸 写真を撮って情報送信！(AI自動入力デモ)</button>
+    <div class="note">※ 実際はカメラ起動＆AI認識で数秒で入力が完了します</div>
+    
+    <div class="data-insight">
+        <h3>貴店へのデータフィードバック例</h3>
+        <p>当アプリ導入で得られる経営メリット</p>
+        <p>今月の推定食品ロス削減額: <strong>¥255,000</strong></p>
+        <p>完売率が最も高かった割引開始時間: **19:15**</p>
+    </div>
+</div>
+
+</body>
+</html>

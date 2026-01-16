@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>企業様向け情報入力フォーム - SMAP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            max-width: 900px;
+            width: 100%;
+            padding: 40px;
+            animation: slideUp 0.3s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #4CAF50;
+        }
+        
+        .header h1 {
+            color: #333;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 1em;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .submit-button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+        
+        .info-box {
+            background: linear-gradient(135deg, #e8f5e9 0%, #fff 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border-left: 4px solid #4CAF50;
+        }
+        
+        .info-box h3 {
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .info-box p {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+        
+        .success-message {
+            display: none;
+            background: #4CAF50;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .required {
+            color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="supermarket_app_map_clickable_list.html" class="back-button">
+            <i class="fas fa-arrow-left"></i> マップに戻る
+        </a>
+        
+        <div class="header">
+            <h1><i class="fas fa-building"></i> 企業様向け情報入力フォーム</h1>
+            <p>スーパーマーケット各店舗の情報を更新・登録いただくフォームです</p>
+        </div>
+        
+        <div class="success-message" id="success-message">
+            <i class="fas fa-check-circle"></i> 情報を送信しました。ありがとうございます！
+        </div>
+        
+        <form id="business-form">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="company-name"><i class="fas fa-store"></i> 企業名・店舗名 <span class="required">*</span></label>
+                    <input type="text" id="company-name" name="company-name" required placeholder="例：ハローズ 御幸店">
+                </div>
+                
+                <div class="form-group">
+                    <label for="brand"><i class="fas fa-tag"></i> ブランド <span class="required">*</span></label>
+                    <select id="brand" name="brand" required>
+                        <option value="">選択してください</option>
+                        <option value="ハローズ">ハローズ</option>
+                        <option value="エブリイ">エブリイ</option>
+                        <option value="フレスタ">フレスタ</option>
+                        <option value="フジ">フジ</option>
+                        <option value="ラ・ムー">ラ・ムー</option>
+                        <option value="業務スーパー">業務スーパー</option>
+                        <option value="ディオ">ディオ</option>
+                        <option value="オンリーワン">オンリーワン</option>
+                        <option value="ゆめタウン">ゆめタウン</option>
+                        <option value="ザ・ビッグ">ザ・ビッグ</option>
+                        <option value="ミスターマックス">ミスターマックス</option>
+                        <option value="その他">その他</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="address"><i class="fas fa-map-marker-alt"></i> 住所 <span class="required">*</span></label>
+                    <input type="text" id="address" name="address" required placeholder="例：広島県福山市...">
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone"><i class="fas fa-phone"></i> 電話番号</label>
+                    <input type="tel" id="phone" name="phone" placeholder="例：084-XXX-XXXX">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="lat"><i class="fas fa-map-pin"></i> 緯度 (Latitude)</label>
+                    <input type="number" id="lat" name="lat" step="any" placeholder="例：34.547245">
+                </div>
+                
+                <div class="form-group">
+                    <label for="lon"><i class="fas fa-map-pin"></i> 経度 (Longitude)</label>
+                    <input type="number" id="lon" name="lon" step="any" placeholder="例：133.385678">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="souzai"><i class="fas fa-utensils"></i> 惣菜情報</label>
+                <textarea id="souzai" name="souzai" placeholder="本日の惣菜特売情報をご入力ください"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="sengyo"><i class="fas fa-fish"></i> 鮮魚情報</label>
+                <textarea id="sengyo" name="sengyo" placeholder="本日の鮮魚特売情報をご入力ください"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="niku"><i class="fas fa-drumstick-bite"></i> 精肉情報</label>
+                <textarea id="niku" name="niku" placeholder="本日の精肉特売情報をご入力ください"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="seika"><i class="fas fa-carrot"></i> 青果情報</label>
+                <textarea id="seika" name="seika" placeholder="本日の青果特売情報をご入力ください"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="website"><i class="fas fa-globe"></i> ウェブサイトURL</label>
+                <input type="url" id="website" name="website" placeholder="例：https://example.com">
+            </div>
+            
+            <div class="form-group">
+                <label for="contact-person"><i class="fas fa-user-tie"></i> 担当者名</label>
+                <input type="text" id="contact-person" name="contact-person" placeholder="担当者様のお名前">
+            </div>
+            
+            <div class="form-group">
+                <label for="contact-email"><i class="fas fa-envelope"></i> 連絡先メールアドレス <span class="required">*</span></label>
+                <input type="email" id="contact-email" name="contact-email" required placeholder="例：contact@example.com">
+            </div>
+            
+            <div class="form-group">
+                <label for="notes"><i class="fas fa-sticky-note"></i> その他・備考</label>
+                <textarea id="notes" name="notes" placeholder="その他、追加でお伝えしたい情報がございましたらご記入ください"></textarea>
+            </div>
+            
+            <button type="submit" class="submit-button">
+                <i class="fas fa-paper-plane"></i> 情報を送信する
+            </button>
+        </form>
+        
+        <div class="info-box">
+            <h3><i class="fas fa-info-circle"></i> ご利用について</h3>
+            <p><strong>営業時間:</strong> 平日 9:00 - 18:00</p>
+            <p><strong>処理について:</strong> 送信いただいた情報は、内容を確認の上、地図アプリに反映いたします。反映まで2-3営業日かかる場合がございます。</p>
+            <p><strong>注意事項:</strong> このフォームはデモ版です。実際の送信機能は実装されていません。本番環境では、サーバー側でデータベースに保存される処理が必要です。</p>
+            <p><strong>位置情報について:</strong> 緯度・経度が不明な場合は、住所のみの入力でも構いません。後ほど地図上で位置を確認・調整いたします。</p>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('business-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // フォームデータの取得
+            const formData = {
+                companyName: document.getElementById('company-name').value,
+                brand: document.getElementById('brand').value,
+                address: document.getElementById('address').value,
+                phone: document.getElementById('phone').value,
+                lat: document.getElementById('lat').value,
+                lon: document.getElementById('lon').value,
+                souzai: document.getElementById('souzai').value,
+                sengyo: document.getElementById('sengyo').value,
+                niku: document.getElementById('niku').value,
+                seika: document.getElementById('seika').value,
+                website: document.getElementById('website').value,
+                contactPerson: document.getElementById('contact-person').value,
+                contactEmail: document.getElementById('contact-email').value,
+                notes: document.getElementById('notes').value
+            };
+            
+            // デモ版なので、コンソールに出力
+            console.log('企業様からの情報送信:', formData);
+            
+            // 成功メッセージを表示
+            document.getElementById('success-message').style.display = 'block';
+            
+            // フォームをリセット
+            this.reset();
+            
+            // 3秒後にメッセージを非表示
+            setTimeout(() => {
+                document.getElementById('success-message').style.display = 'none';
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
+
+

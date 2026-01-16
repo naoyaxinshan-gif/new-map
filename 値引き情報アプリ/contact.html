@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>お問い合わせ - SMAP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+            animation: slideUp 0.3s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .header h1 {
+            color: #333;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 1em;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .submit-button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+        
+        .contact-info {
+            background: linear-gradient(135deg, #f0f4ff 0%, #fff 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .contact-info h3 {
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .contact-info p {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+        
+        .success-message {
+            display: none;
+            background: #4CAF50;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="supermarket_app_map_clickable_list.html" class="back-button">
+            <i class="fas fa-arrow-left"></i> マップに戻る
+        </a>
+        
+        <div class="header">
+            <h1><i class="fas fa-envelope"></i> お問い合わせ</h1>
+            <p>ご質問・ご要望がございましたら、お気軽にお問い合わせください</p>
+        </div>
+        
+        <div class="success-message" id="success-message">
+            <i class="fas fa-check-circle"></i> お問い合わせを受け付けました。ありがとうございます！
+        </div>
+        
+        <form id="contact-form">
+            <div class="form-group">
+                <label for="name"><i class="fas fa-user"></i> お名前 <span style="color: #f44336;">*</span></label>
+                <input type="text" id="name" name="name" required placeholder="山田 太郎">
+            </div>
+            
+            <div class="form-group">
+                <label for="email"><i class="fas fa-envelope"></i> メールアドレス <span style="color: #f44336;">*</span></label>
+                <input type="email" id="email" name="email" required placeholder="example@email.com">
+            </div>
+            
+            <div class="form-group">
+                <label for="category"><i class="fas fa-tag"></i> お問い合わせ種別 <span style="color: #f44336;">*</span></label>
+                <select id="category" name="category" required>
+                    <option value="">選択してください</option>
+                    <option value="question">機能についての質問</option>
+                    <option value="bug">不具合の報告</option>
+                    <option value="suggestion">ご要望・ご提案</option>
+                    <option value="data">店舗情報について</option>
+                    <option value="other">その他</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="subject"><i class="fas fa-heading"></i> 件名 <span style="color: #f44336;">*</span></label>
+                <input type="text" id="subject" name="subject" required placeholder="お問い合わせの件名">
+            </div>
+            
+            <div class="form-group">
+                <label for="message"><i class="fas fa-comment"></i> お問い合わせ内容 <span style="color: #f44336;">*</span></label>
+                <textarea id="message" name="message" required placeholder="お問い合わせ内容をご記入ください"></textarea>
+            </div>
+            
+            <button type="submit" class="submit-button">
+                <i class="fas fa-paper-plane"></i> 送信する
+            </button>
+        </form>
+        
+        <div class="contact-info">
+            <h3><i class="fas fa-info-circle"></i> お問い合わせについて</h3>
+            <p><strong>営業時間:</strong> 平日 9:00 - 18:00</p>
+            <p><strong>返信について:</strong> お問い合わせいただいた内容については、2営業日以内にご返信いたします。</p>
+            <p><strong>注意事項:</strong> お問い合わせフォームは現在デモ版です。実際の送信機能は実装されていません。</p>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // フォームデータの取得
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                category: document.getElementById('category').value,
+                subject: document.getElementById('subject').value,
+                message: document.getElementById('message').value
+            };
+            
+            // デモ版なので、コンソールに出力
+            console.log('お問い合わせ内容:', formData);
+            
+            // 成功メッセージを表示
+            document.getElementById('success-message').style.display = 'block';
+            
+            // フォームをリセット
+            this.reset();
+            
+            // 3秒後にメッセージを非表示
+            setTimeout(() => {
+                document.getElementById('success-message').style.display = 'none';
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
+
